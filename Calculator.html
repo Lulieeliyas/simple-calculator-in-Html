@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simple Calculator</title>
+ 
+  <style>
+body {
+  font-family: 'Inter', sans-serif;
+   display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 600px;
+  background-color: rgb(171, 126, 211);
+  margin: 0;
+  padding: 200px;
+  box-sizing: border-box;
+}
+
+.calculator {
+  background-color: rgb(160, 188, 224);
+  padding: 25px;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  max-width: 320px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+#display {
+  width: 100%;
+  height: 70px;
+  background-color: lightgray;
+  color: black;
+  border: double;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  font-size: 20px;
+  text-align: right;
+  padding: 0 15px;
+  box-sizing: border-box;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-weight: 300;
+}
+.buttons {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+.buttons button {
+  background-color: lightgray;
+  color: black;
+  border: none;
+  padding: 20px;
+  font-size: 25px;
+  border-radius: 10px;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+ 
+}
+
+.buttons button:hover {
+  background-color: rgb(99, 99, 99);
+  transform: translateY(-2px);
+}
+
+.buttons button:active {
+  background-color: rgb(92, 92, 90);
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Operator buttons: /, *, -, +, % */
+.buttons button.operator {
+  background-color: lightcoral;
+}
+
+.buttons button.operator:hover {
+  background-color: rgb(241, 181, 160);
+}
+
+/* Buttons 1–9 */
+.buttons button:nth-child(5),
+.buttons button:nth-child(6),
+.buttons button:nth-child(7),
+.buttons button:nth-child(9),
+.buttons button:nth-child(10),
+.buttons button:nth-child(11),
+.buttons button:nth-child(13),
+.buttons button:nth-child(14),
+.buttons button:nth-child(15) {
+  background-color: lightseagreen;
+}
+
+.buttons button:nth-child(5):hover,
+.buttons button:nth-child(6):hover,
+.buttons button:nth-child(7):hover,
+.buttons button:nth-child(9):hover,
+.buttons button:nth-child(10):hover,
+.buttons button:nth-child(11):hover,
+.buttons button:nth-child(13):hover,
+.buttons button:nth-child(14):hover,
+.buttons button:nth-child(15):hover {
+  background-color: rgb(67, 167, 112);
+}
+
+/* Specific button colors */
+.buttons button:nth-child(1) { /* C button */
+  background-color: rgb(231, 19, 51);
+}
+.buttons button:nth-child(1):hover {
+  background-color: hotpink;
+}
+
+.buttons button:nth-child(2) { /* DEL button */
+  background-color: rgb(42, 139, 204);
+}
+.buttons button:nth-child(2):hover {
+  background-color: rgb(58, 216, 228);
+}
+
+.buttons button:nth-child(16) { /* = button */
+  background-color: rgb(34, 175, 218);
+}
+.buttons button:nth-child(16):hover {
+  background-color: rgb(109, 162, 180);
+}
+
+.buttons button:nth-child(17) { /* 0 button */
+  background-color: rgb(154, 90, 226);
+}
+.buttons button:nth-child(17):hover {
+  background-color: rgb(128, 74, 150);
+}
+
+.buttons button:nth-child(18) { /* . button */
+  background-color: rgb(4, 243, 243);
+}
+.buttons button:nth-child(18):hover {
+  background-color: rgb(155, 236, 236);
+}
+
+  </style>
+</head>
+<body>
+ 
+  <div class="calculator">
+    <input type="text" id="display" disabled>
+    <div class="buttons">
+      <button class="clear" onclick="clearDisplay()">C</button>
+      <button class="delete" onclick="deleteLast()">DEL</button>
+      <button class="operator" onclick="appendToDisplay('/')">/</button>
+      <button class="operator" onclick="appendToDisplay('*')">*</button>
+      <button onclick="appendToDisplay('7')">7</button>
+      <button onclick="appendToDisplay('8')">8</button>
+      <button onclick="appendToDisplay('9')">9</button>
+      <button class="operator" onclick="appendToDisplay('-')">-</button>
+      <button onclick="appendToDisplay('4')">4</button>
+      <button onclick="appendToDisplay('5')">5</button>
+      <button onclick="appendToDisplay('6')">6</button>
+      <button class="operator" onclick="appendToDisplay('+')">+</button>
+      <button onclick="appendToDisplay('1')">1</button>
+      <button onclick="appendToDisplay('2')">2</button>
+      <button onclick="appendToDisplay('3')">3</button>
+      <button class="equal" onclick="calculateResult()">=</button>
+      <button onclick="appendToDisplay('0')">0</button>
+      <button onclick="appendToDisplay('.')">.</button>
+ 
+    </div>
+  </div>
+
+  <script >
+    function clearDisplay() {
+  document.getElementById("display").value = "";
+}
+
+function deleteLast() {
+  const display = document.getElementById("display");
+  display.value = display.value.slice(0, -1);
+}
+
+function appendToDisplay(value) {
+  const display = document.getElementById("display");
+  display.value += value;
+}
+
+function calculateResult() {
+  const display = document.getElementById("display");
+  try {
+    display.value = eval(display.value);
+  } catch (e) {
+    display.value = "Error";
+  }
+}
+
+  </script>
+</body>
+</html>
