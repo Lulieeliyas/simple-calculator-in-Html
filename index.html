@@ -1,202 +1,364 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Simple Calculator</title>
- 
-  <style>
-body {
-  font-family: 'Inter', sans-serif;
-   display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 600px;
-  background-color: rgb(171, 126, 211);
-  margin: 0;
-  padding: 200px;
-  box-sizing: border-box;
-}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#ab7ed3">
 
-.calculator {
-  background-color: rgb(160, 188, 224);
-  padding: 25px;
-  border-radius: 15px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-  max-width: 320px;
-  width: 100%;
-  box-sizing: border-box;
-}
+    <title>Simple Calculator</title>
 
-#display {
-  width: 100%;
-  height: 70px;
-  background-color: lightgray;
-  color: black;
-  border: double;
-  border-radius: 10px;
-  margin-bottom: 20px;
-  font-size: 20px;
-  text-align: right;
-  padding: 0 15px;
-  box-sizing: border-box;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  font-weight: 300;
-}
-.buttons {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
-}
+    <style>
+        /* General Styling */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-.buttons button {
-  background-color: lightgray;
-  color: black;
-  border: none;
-  padding: 20px;
-  font-size: 25px;
-  border-radius: 10px;
-  cursor: pointer;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
- 
-}
+        body {
+            font-family: 'Inter', Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            min-height: 100dvh;
+            background-color: rgb(171, 126, 211);
+            padding: 20px;
+        }
 
-.buttons button:hover {
-  background-color: rgb(99, 99, 99);
-  transform: translateY(-2px);
-}
+        /* Calculator Container */
+        .calculator {
+            background-color: rgb(160, 188, 224);
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 350px;
+        }
 
-.buttons button:active {
-  background-color: rgb(92, 92, 90);
-  transform: translateY(0);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-}
+        /* Calculator Display */
+        #display {
+            width: 100%;
+            height: 75px;
+            background-color: lightgray;
+            color: black;
+            border: 2px solid white;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            font-size: clamp(22px, 6vw, 30px);
+            text-align: right;
+            padding: 0 15px;
+            outline: none;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            font-weight: 500;
+        }
 
-/* Operator buttons: /, *, -, +, % */
-.buttons button.operator {
-  background-color: lightcoral;
-}
+        /* Buttons Grid */
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 10px;
+        }
 
-.buttons button.operator:hover {
-  background-color: rgb(241, 181, 160);
-}
+        /* General Button Styling */
+        .buttons button {
+            background-color: lightgray;
+            color: black;
+            border: none;
+            min-width: 0;
+            min-height: 65px;
+            padding: 12px 5px;
+            font-size: 24px;
+            font-weight: 600;
+            border-radius: 12px;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: all 0.2s ease;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+        }
 
-/* Buttons 1–9 */
-.buttons button:nth-child(5),
-.buttons button:nth-child(6),
-.buttons button:nth-child(7),
-.buttons button:nth-child(9),
-.buttons button:nth-child(10),
-.buttons button:nth-child(11),
-.buttons button:nth-child(13),
-.buttons button:nth-child(14),
-.buttons button:nth-child(15) {
-  background-color: lightseagreen;
-}
+        .buttons button:hover {
+            background-color: rgb(99, 99, 99);
+            transform: translateY(-2px);
+        }
 
-.buttons button:nth-child(5):hover,
-.buttons button:nth-child(6):hover,
-.buttons button:nth-child(7):hover,
-.buttons button:nth-child(9):hover,
-.buttons button:nth-child(10):hover,
-.buttons button:nth-child(11):hover,
-.buttons button:nth-child(13):hover,
-.buttons button:nth-child(14):hover,
-.buttons button:nth-child(15):hover {
-  background-color: rgb(67, 167, 112);
-}
+        .buttons button:active {
+            transform: scale(0.95);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
 
-/* Specific button colors */
-.buttons button:nth-child(1) { /* C button */
-  background-color: rgb(231, 19, 51);
-}
-.buttons button:nth-child(1):hover {
-  background-color: hotpink;
-}
+        /* Operator Buttons */
+        .buttons button.operator {
+            background-color: lightcoral;
+        }
 
-.buttons button:nth-child(2) { /* DEL button */
-  background-color: rgb(42, 139, 204);
-}
-.buttons button:nth-child(2):hover {
-  background-color: rgb(58, 216, 228);
-}
+        .buttons button.operator:hover {
+            background-color: rgb(241, 181, 160);
+        }
 
-.buttons button:nth-child(16) { /* = button */
-  background-color: rgb(34, 175, 218);
-}
-.buttons button:nth-child(16):hover {
-  background-color: rgb(109, 162, 180);
-}
+        /* Number Buttons */
+        .buttons button:nth-child(5),
+        .buttons button:nth-child(6),
+        .buttons button:nth-child(7),
+        .buttons button:nth-child(9),
+        .buttons button:nth-child(10),
+        .buttons button:nth-child(11),
+        .buttons button:nth-child(13),
+        .buttons button:nth-child(14),
+        .buttons button:nth-child(15) {
+            background-color: lightseagreen;
+        }
 
-.buttons button:nth-child(17) { /* 0 button */
-  background-color: rgb(154, 90, 226);
-}
-.buttons button:nth-child(17):hover {
-  background-color: rgb(128, 74, 150);
-}
+        .buttons button:nth-child(5):hover,
+        .buttons button:nth-child(6):hover,
+        .buttons button:nth-child(7):hover,
+        .buttons button:nth-child(9):hover,
+        .buttons button:nth-child(10):hover,
+        .buttons button:nth-child(11):hover,
+        .buttons button:nth-child(13):hover,
+        .buttons button:nth-child(14):hover,
+        .buttons button:nth-child(15):hover {
+            background-color: rgb(67, 167, 112);
+        }
 
-.buttons button:nth-child(18) { /* . button */
-  background-color: rgb(4, 243, 243);
-}
-.buttons button:nth-child(18):hover {
-  background-color: rgb(155, 236, 236);
-}
+        /* Clear Button */
+        .buttons button:nth-child(1) {
+            background-color: rgb(231, 19, 51);
+        }
 
-  </style>
+        .buttons button:nth-child(1):hover {
+            background-color: hotpink;
+        }
+
+        /* Delete Button */
+        .buttons button:nth-child(2) {
+            background-color: rgb(42, 139, 204);
+        }
+
+        .buttons button:nth-child(2):hover {
+            background-color: rgb(58, 216, 228);
+        }
+
+        /* Equal Button */
+        .buttons button:nth-child(16) {
+            background-color: rgb(34, 175, 218);
+        }
+
+        .buttons button:nth-child(16):hover {
+            background-color: rgb(109, 162, 180);
+        }
+
+        /* Zero Button */
+        .buttons button:nth-child(17) {
+            background-color: rgb(154, 90, 226);
+        }
+
+        .buttons button:nth-child(17):hover {
+            background-color: rgb(128, 74, 150);
+        }
+
+        /* Decimal Button */
+        .buttons button:nth-child(18) {
+            background-color: rgb(4, 243, 243);
+        }
+
+        .buttons button:nth-child(18):hover {
+            background-color: rgb(155, 236, 236);
+        }
+
+        /* Tablet Responsive Design */
+        @media (max-width: 768px) {
+            body {
+                padding: 20px;
+            }
+
+            .calculator {
+                max-width: 340px;
+            }
+        }
+
+        /* Mobile Responsive Design */
+        @media (max-width: 480px) {
+            body {
+                padding: 15px;
+            }
+
+            .calculator {
+                max-width: 100%;
+                padding: 20px;
+                border-radius: 18px;
+            }
+
+            #display {
+                height: 70px;
+                margin-bottom: 15px;
+                font-size: 26px;
+            }
+
+            .buttons {
+                gap: 9px;
+            }
+
+            .buttons button {
+                min-height: 60px;
+                font-size: 22px;
+                border-radius: 10px;
+            }
+        }
+
+        /* Small Mobile Screens */
+        @media (max-width: 350px) {
+            body {
+                padding: 10px;
+            }
+
+            .calculator {
+                padding: 14px;
+            }
+
+            .buttons {
+                gap: 7px;
+            }
+
+            .buttons button {
+                min-height: 52px;
+                font-size: 19px;
+            }
+
+            #display {
+                height: 60px;
+                font-size: 22px;
+            }
+        }
+    </style>
 </head>
+
 <body>
- 
-  <div class="calculator">
-    <input type="text" id="display" disabled>
-    <div class="buttons">
-      <button class="clear" onclick="clearDisplay()">C</button>
-      <button class="delete" onclick="deleteLast()">DEL</button>
-      <button class="operator" onclick="appendToDisplay('/')">/</button>
-      <button class="operator" onclick="appendToDisplay('*')">*</button>
-      <button onclick="appendToDisplay('7')">7</button>
-      <button onclick="appendToDisplay('8')">8</button>
-      <button onclick="appendToDisplay('9')">9</button>
-      <button class="operator" onclick="appendToDisplay('-')">-</button>
-      <button onclick="appendToDisplay('4')">4</button>
-      <button onclick="appendToDisplay('5')">5</button>
-      <button onclick="appendToDisplay('6')">6</button>
-      <button class="operator" onclick="appendToDisplay('+')">+</button>
-      <button onclick="appendToDisplay('1')">1</button>
-      <button onclick="appendToDisplay('2')">2</button>
-      <button onclick="appendToDisplay('3')">3</button>
-      <button class="equal" onclick="calculateResult()">=</button>
-      <button onclick="appendToDisplay('0')">0</button>
-      <button onclick="appendToDisplay('.')">.</button>
- 
+
+    <!-- Calculator -->
+    <div class="calculator">
+
+        <!-- Display -->
+        <input
+            type="text"
+            id="display"
+            disabled
+            aria-label="Calculator display"
+            placeholder="0"
+        >
+
+        <!-- Calculator Buttons -->
+        <div class="buttons">
+
+            <button class="clear" onclick="clearDisplay()">C</button>
+            <button class="delete" onclick="deleteLast()">DEL</button>
+            <button class="operator" onclick="appendToDisplay('/')">/</button>
+            <button class="operator" onclick="appendToDisplay('*')">*</button>
+
+            <button onclick="appendToDisplay('7')">7</button>
+            <button onclick="appendToDisplay('8')">8</button>
+            <button onclick="appendToDisplay('9')">9</button>
+            <button class="operator" onclick="appendToDisplay('-')">-</button>
+
+            <button onclick="appendToDisplay('4')">4</button>
+            <button onclick="appendToDisplay('5')">5</button>
+            <button onclick="appendToDisplay('6')">6</button>
+            <button class="operator" onclick="appendToDisplay('+')">+</button>
+
+            <button onclick="appendToDisplay('1')">1</button>
+            <button onclick="appendToDisplay('2')">2</button>
+            <button onclick="appendToDisplay('3')">3</button>
+            <button class="equal" onclick="calculateResult()">=</button>
+
+            <button onclick="appendToDisplay('0')">0</button>
+            <button onclick="appendToDisplay('.')">.</button>
+
+        </div>
     </div>
-  </div>
 
-  <script >
-    function clearDisplay() {
-  document.getElementById("display").value = "";
-}
+    <!-- JavaScript -->
+    <script>
 
-function deleteLast() {
-  const display = document.getElementById("display");
-  display.value = display.value.slice(0, -1);
-}
+        const display = document.getElementById("display");
 
-function appendToDisplay(value) {
-  const display = document.getElementById("display");
-  display.value += value;
-}
+        // Clear Display
+        function clearDisplay() {
+            display.value = "";
+        }
 
-function calculateResult() {
-  const display = document.getElementById("display");
-  try {
-    display.value = eval(display.value);
-  } catch (e) {
-    display.value = "Error";
-  }
-}
+        // Delete Last Character
+        function deleteLast() {
+            display.value = display.value.slice(0, -1);
+        }
 
-  </script>
+        // Append Values to Display
+        function appendToDisplay(value) {
+            if (display.value === "Error") {
+                display.value = "";
+            }
+
+            display.value += value;
+        }
+
+        // Calculate Result
+        function calculateResult() {
+            const expression = display.value.trim();
+
+            if (!expression) {
+                return;
+            }
+
+            try {
+                // Allow only basic mathematical characters
+                if (!/^[0-9+\-*/().\s]+$/.test(expression)) {
+                    throw new Error("Invalid Expression");
+                }
+
+                // Validate the expression before calculation
+                const result = Function(
+                    '"use strict"; return (' + expression + ')'
+                )();
+
+                if (typeof result !== "number" || !Number.isFinite(result)) {
+                    throw new Error("Invalid Result");
+                }
+
+                display.value = Number(result.toPrecision(12)).toString();
+
+            } catch (error) {
+                display.value = "Error";
+            }
+        }
+
+        // Keyboard Support
+        document.addEventListener("keydown", function(event) {
+
+            const key = event.key;
+
+            if (/^[0-9+\-*/.]$/.test(key)) {
+                appendToDisplay(key);
+            }
+
+            else if (key === "Enter" || key === "=") {
+                event.preventDefault();
+                calculateResult();
+            }
+
+            else if (key === "Backspace") {
+                deleteLast();
+            }
+
+            else if (key === "Escape") {
+                clearDisplay();
+            }
+
+        });
+
+    </script>
+
 </body>
 </html>
